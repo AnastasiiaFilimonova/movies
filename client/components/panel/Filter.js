@@ -1,9 +1,16 @@
-import {useEffect, useState} from "react"
-import {useRouter} from "next/router"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
-const FilterPanel = ({activeGenre, setActiveGenre, activeYear, setActiveYear, activeSortBy, setActiveSortBy}) => {
- 
-    const genres = [
+const FilterPanel = ({
+  activeGenre,
+  setActiveGenre,
+  activeYear,
+  setActiveYear,
+  activeSortBy,
+  setActiveSortBy,
+  setLoaded,
+}) => {
+  const genres = [
     "News",
     "Documentary",
     "Adventure",
@@ -28,9 +35,9 @@ const FilterPanel = ({activeGenre, setActiveGenre, activeYear, setActiveYear, ac
     "Horror",
     "Musical",
   ];
-  const years=[]
-  for (let i=2016; i>=1916; i--){
-    years.push(i)
+  const years = [];
+  for (let i = 2016; i >= 1916; i--) {
+    years.push(i);
   }
   return (
     <div className="section-pannel">
@@ -40,12 +47,24 @@ const FilterPanel = ({activeGenre, setActiveGenre, activeYear, setActiveYear, ac
             <div className="row form-grid">
               <div className="col-sm-6 col-lg-3">
                 <div className="input-view-flat input-group">
-                  <select className="form-control" name="genre" value={activeGenre} onChange={(event)=>{
-                      setActiveGenre(event.target.value)
-                  }}>
-                    <option selected="true" value=''>Genre:</option>
+                  <select
+                    className="form-control"
+                    name="genre"
+                    value={activeGenre}
+                    onChange={(event) => {
+                      setLoaded(false);
+                      setActiveGenre(event.target.value);
+                    }}
+                  >
+                    <option selected="true" value="">
+                      Genre:
+                    </option>
                     {genres.map((genre) => {
-                      return <option key={genre} value={genre}>{genre}</option>;
+                      return (
+                        <option key={genre} value={genre}>
+                          {genre}
+                        </option>
+                      );
                     })}
                   </select>
                 </div>
@@ -56,10 +75,18 @@ const FilterPanel = ({activeGenre, setActiveGenre, activeYear, setActiveYear, ac
                   data-toggle="datetimepicker"
                   data-target="#release-year-field"
                 >
-                  <select className="form-control" name="year" value={activeYear} onChange={(event)=>{
-                      setActiveYear(event.target.value)
-                  }}>
-                    <option selected="true" value=''>Year:</option>
+                  <select
+                    className="form-control"
+                    name="year"
+                    value={activeYear}
+                    onChange={(event) => {
+                      setLoaded(false);
+                      setActiveYear(event.target.value);
+                    }}
+                  >
+                    <option selected="true" value="">
+                      Year:
+                    </option>
                     {years.map((year) => {
                       return <option key={year}>{year}</option>;
                     })}
@@ -68,10 +95,18 @@ const FilterPanel = ({activeGenre, setActiveGenre, activeYear, setActiveYear, ac
               </div>
               <div className="col-sm-6 col-lg-3">
                 <div className="input-view-flat input-group">
-                  <select className="form-control" name="sortBy" value={activeSortBy} onChange={(event)=>{
-                      setActiveSortBy(event.target.value)
-                  }}>
-                    <option selected="true" value=''>Sort by</option>
+                  <select
+                    className="form-control"
+                    name="sortBy"
+                    value={activeSortBy}
+                    onChange={(event) => {
+                      setLoaded(false);
+                      setActiveSortBy(event.target.value);
+                    }}
+                  >
+                    <option selected="true" value="">
+                      Sort by
+                    </option>
                     <option>Duration</option>
                     <option>Rating</option>
                   </select>

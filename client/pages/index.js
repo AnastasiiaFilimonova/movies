@@ -4,36 +4,37 @@ import FilterPanel from "../components/panel/Filter";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 
+
 const IndexPage = () => {
   const router = useRouter();
   const [activeGenre, setActiveGenre] = useState(router.query?.genre);
   const [activeYear, setActiveYear] = useState(null);
   const [activeSortBy, setActiveSortBy] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
+  const [movies, setMovies] = useState([]);
+  const [count, setCount] = useState(0);
   console.log({ activeGenre, activeYear, activeSortBy });
   useEffect(() => {
-    // if (!loaded) {return}
-    // const params = [];
-    // if (activeGenre) {
-    //   params.push("genre=" + activeGenre);
-    // }
-    // if (activeYear) {
-    //   params.push("year=" + activeYear);
-    // }
-    // if (activeSortBy) {
-    //   params.push("sortBy=" + activeSortBy);
-    // }
-    // const queryString = params.join("&");
-    // if (queryString && loaded) {
-    //   router.push("?" + queryString, null, { scroll: false });
-    // }
-  }, [activeGenre, activeYear, activeSortBy]);
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    if (loaded) {
-      return;
+        const params = [];
+    if (activeGenre) {
+      params.push("genre=" + activeGenre);
     }
-    if (!router.query) {
+    if (activeYear) {
+      params.push("year=" + activeYear);
+    }
+    if (activeSortBy) {
+      params.push("sortBy=" + activeSortBy);
+    }
+    const queryString = params.join("&");
+    if (!loaded) {
+      router.push("?" + queryString, null, { scroll: false });
+    }
+  }, [activeGenre, activeYear, activeSortBy, loaded]);
+  useEffect(() => {
+    //if (loaded) {
+     // return;
+   // }
+    if (!router.isReady) {
       return;
     }
         if (router.query.genre) {
@@ -45,19 +46,20 @@ const IndexPage = () => {
     if (router.query.sortBy) {
       setActiveSortBy(router.query.sortBy);
     }
-    fetch("http://localhost:3001/movies?year="+router.query.year)
+    fetch("http://localhost:3001/movies"+router.asPath.slice(1))
       .then((res) => res.json())
       .then((data) => {
         setMovies(data.items);
+        setCount(data.count)
       });
-  }, [router.query]);
-  useEffect(() => {
-    fetch("http://localhost:3001/movies")
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data.items);
-      });
-  }, []);
+  }, [router.isReady,router.asPath]);
+  // useEffect(() => {
+  //   fetch("http://localhost:3001/movies")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setMovies(data.items);
+  //     });
+  // }, []);
   console.log(movies);
   return (
     <MovieLayout>
@@ -71,6 +73,7 @@ const IndexPage = () => {
               setActiveYear,
               activeSortBy,
               setActiveSortBy,
+              setLoaded
             }}
           />
           {movies?.map((movie) => {
@@ -90,7 +93,7 @@ const IndexPage = () => {
               </a>
               <span className="paginator-item">...</span>
               <a className="paginator-item" href="#">
-                10
+                {Math.ceil(count/10)}
               </a>
               <a className="paginator-item" href="#">
                 <i className="fas fa-chevron-right" />
