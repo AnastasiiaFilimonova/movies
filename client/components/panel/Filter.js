@@ -9,6 +9,8 @@ const FilterPanel = ({
   activeSortBy,
   setActiveSortBy,
   setLoaded,
+  setGrid,
+  grid,
 }) => {
   const genres = [
     "News",
@@ -119,17 +121,27 @@ const FilterPanel = ({
           <span className="info-title d-md-none mr-3">Select view:</span>
           <ul className="ml-md-auto h5 list-inline">
             <li className="list-inline-item">
-              <a
-                className="content-link transparent-link"
-                href="movies-blocks.html"
+              <a onClick={
+                (e)=>{
+                  e.preventDefault()
+                  setGrid(true)
+                }
+               }
+                className={`content-link transparent-link ${grid ? 'active': ""}`}
+                href="#"
               >
                 <i className="fas fa-th" />
               </a>
             </li>
             <li className="list-inline-item">
-              <a
-                className="content-link transparent-link active"
-                href="movies-list.html"
+              <a onClick={
+                (e)=>{
+                  e.preventDefault()
+                  setGrid(false)
+                }
+               }
+               className={`content-link transparent-link ${grid ? '': "active"}`}
+                href="#"
               >
                 <i className="fas fa-th-list" />
               </a>

@@ -4,7 +4,6 @@ import FilterPanel from "../components/panel/Filter";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 
-
 const IndexPage = () => {
   const router = useRouter();
   const [activeGenre, setActiveGenre] = useState(router.query?.genre);
@@ -13,9 +12,10 @@ const IndexPage = () => {
   const [loaded, setLoaded] = useState(true);
   const [movies, setMovies] = useState([]);
   const [count, setCount] = useState(0);
+  const [grid, setGrid] = useState(false);
   console.log({ activeGenre, activeYear, activeSortBy });
   useEffect(() => {
-        const params = [];
+    const params = [];
     if (activeGenre) {
       params.push("genre=" + activeGenre);
     }
@@ -32,12 +32,12 @@ const IndexPage = () => {
   }, [activeGenre, activeYear, activeSortBy, loaded]);
   useEffect(() => {
     //if (loaded) {
-     // return;
-   // }
+    // return;
+    // }
     if (!router.isReady) {
       return;
     }
-        if (router.query.genre) {
+    if (router.query.genre) {
       setActiveGenre(router.query.genre);
     }
     if (router.query.year) {
@@ -46,13 +46,13 @@ const IndexPage = () => {
     if (router.query.sortBy) {
       setActiveSortBy(router.query.sortBy);
     }
-    fetch("http://localhost:3001/movies"+router.asPath.slice(1))
+    fetch("http://localhost:3001/movies" + router.asPath.slice(1))
       .then((res) => res.json())
       .then((data) => {
         setMovies(data.items);
-        setCount(data.count)
+        setCount(data.count);
       });
-  }, [router.isReady,router.asPath]);
+  }, [router.isReady, router.asPath]);
   // useEffect(() => {
   //   fetch("http://localhost:3001/movies")
   //     .then((res) => res.json())
@@ -73,12 +73,28 @@ const IndexPage = () => {
               setActiveYear,
               activeSortBy,
               setActiveSortBy,
-              setLoaded
+              setGrid,
+              grid,
+              setLoaded,
             }}
           />
-          {movies?.map((movie) => {
-            return <LineMovie key={movie._id} movie={movie} />;
-          })}
+          <div className="row">
+            {movies?.map((movie) => {
+              if (grid) {
+                return (
+                  <div className="col-4">
+                    <LineMovie key={movie._id} movie={movie} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="col-12">
+                    <LineMovie key={movie._id} movie={movie} />
+                  </div>
+                );
+              }
+            })}
+          </div>
           <div className="section-bottom">
             <div className="paginator">
               <a className="paginator-item" href="#">
@@ -93,7 +109,7 @@ const IndexPage = () => {
               </a>
               <span className="paginator-item">...</span>
               <a className="paginator-item" href="#">
-                {Math.ceil(count/10)}
+                {Math.ceil(count / 10)}
               </a>
               <a className="paginator-item" href="#">
                 <i className="fas fa-chevron-right" />
