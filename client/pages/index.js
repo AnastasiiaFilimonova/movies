@@ -3,6 +3,7 @@ import LineMovie from "../components/movie/Line";
 import FilterPanel from "../components/panel/Filter";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
+import Pagination from "../components/ui/Pagination";
 
 const IndexPage = () => {
   const router = useRouter();
@@ -13,6 +14,7 @@ const IndexPage = () => {
   const [movies, setMovies] = useState([]);
   const [count, setCount] = useState(0);
   const [grid, setGrid] = useState(false);
+  const [activePage, setActivePage] = useState(1);
   console.log({ activeGenre, activeYear, activeSortBy });
   useEffect(() => {
     const params = [];
@@ -46,13 +48,20 @@ const IndexPage = () => {
     if (router.query.sortBy) {
       setActiveSortBy(router.query.sortBy);
     }
-    fetch("http://localhost:3001/movies" + router.asPath.slice(1))
+    const limit = 12;
+    const skip = (activePage - 1) * 12;
+    console.log("hello")
+    fetch(
+      "http://localhost:3001/movies" +
+       (router.asPath.slice(1) || '?') +
+        `&skip=${skip}&limit=${limit}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setMovies(data.items);
         setCount(data.count);
       });
-  }, [router.isReady, router.asPath]);
+  }, [router.isReady, router.asPath, activePage]);
   // useEffect(() => {
   //   fetch("http://localhost:3001/movies")
   //     .then((res) => res.json())
@@ -78,17 +87,24 @@ const IndexPage = () => {
               setLoaded,
             }}
           />
+          <div className="section-bottom mb-3">
+            <Pagination
+              pages={Math.ceil(count / 10)}
+              activePage={activePage}
+              setActivePage={setActivePage}
+            />
+          </div>
           <div className="row">
             {movies?.map((movie) => {
               if (grid) {
                 return (
-                  <div className="col-4">
-                    <LineMovie key={movie._id} movie={movie} />
+                  <div className="col-4 mb-5">
+                    <LineMovie key={movie._id} movie={movie} grid={grid} />
                   </div>
                 );
               } else {
                 return (
-                  <div className="col-12">
+                  <div className="col-12 mb-5">
                     <LineMovie key={movie._id} movie={movie} />
                   </div>
                 );
@@ -96,25 +112,11 @@ const IndexPage = () => {
             })}
           </div>
           <div className="section-bottom">
-            <div className="paginator">
-              <a className="paginator-item" href="#">
-                <i className="fas fa-chevron-left" />
-              </a>
-              <a className="paginator-item" href="#">
-                1
-              </a>
-              <span className="active paginator-item">2</span>
-              <a className="paginator-item" href="#">
-                3
-              </a>
-              <span className="paginator-item">...</span>
-              <a className="paginator-item" href="#">
-                {Math.ceil(count / 10)}
-              </a>
-              <a className="paginator-item" href="#">
-                <i className="fas fa-chevron-right" />
-              </a>
-            </div>
+            <Pagination
+              pages={Math.ceil(count / 10)}
+              activePage={activePage}
+              setActivePage={setActivePage}
+            />
           </div>
         </div>
       </section>

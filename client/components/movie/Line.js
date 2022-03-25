@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-const LineMovie = ({ movie }) => {
+const LineMovie = ({ movie, grid }) => {
     const { title, poster, imdb, runtime, plot, genres, _id } = movie
     return (
-        <article className="movie-line-entity">
+        <article className={"movie-line-entity"+(grid ? ' grid-view':"")}>
             <div className="entity-poster" data-role="hover-wrap">
                 <div className="embed-responsive embed-responsive-poster">
                     <img
@@ -53,6 +53,7 @@ const LineMovie = ({ movie }) => {
                     {plot}
                 </p>
             </div>
+            {!grid && (
             <div className="entity-extra">
                 <div className="text-uppercase entity-extra-title">Showtime</div>
                 <div className="entity-showtime">
@@ -90,6 +91,7 @@ const LineMovie = ({ movie }) => {
                     </div>
                 </div>
             </div>
+            )}
         </article>
 
     )
