@@ -1,3 +1,5 @@
+import Link  from "next/link"
+
 const Footer = ({ topMovies, genreItems }) => {
     return (
         <footer className="section-text-white footer footer-links bg-darken">
@@ -31,9 +33,9 @@ const Footer = ({ topMovies, genreItems }) => {
                         <ul className="list-unstyled list-wide footer-content">
                             {topMovies.map((topMovie, index) => {
                                 return (<li key={index}>
-                                    <a className="content-link" href={topMovie.link}>
+                                   <Link href={topMovie.link}><a className="content-link" >
                                         {topMovie.name}
-                                    </a>
+                                    </a></Link>
                                 </li>)
                             })}
                         </ul>
@@ -43,9 +45,9 @@ const Footer = ({ topMovies, genreItems }) => {
                         <ul className="list-unstyled list-wide footer-content">
                         {genreItems.map((genreItem, index) => {
                                 return (<li key={index}>
-                                    <a className="content-link" href={genreItem.link}>
+                                   <Link href={genreItem.link}><a className="content-link">
                                         {genreItem.name}
-                                    </a>
+                                    </a></Link>
                                 </li>)
                             })}
                         </ul>
@@ -109,8 +111,8 @@ const Footer = ({ topMovies, genreItems }) => {
                 </div>
             </div>
             <div className="footer-copy">
-                <div className="container">
-                    Copyright 2019 © AmigosThemes. All rights reserved.
+                <div className="container text-center">
+                    Copyright {new Date().getFullYear()} © AmigosThemes. All rights reserved.
                 </div>
             </div>
         </footer>

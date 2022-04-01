@@ -1,3 +1,5 @@
+import Link from 'next/link'  
+
 const Menu = ({topMovies, genreItems}) => {
     
     return (
@@ -12,9 +14,9 @@ const Menu = ({topMovies, genreItems}) => {
                 <ul className="collapse nav">
                     {topMovies.map((topMovie, index) => {
                         return (<li className="nav-item" key={index}>
-                            <a className="nav-link" href={topMovie.link}>
+                            <Link href={topMovie.link}><a className="nav-link">
                                 {topMovie.name}
-                            </a>
+                            </a></Link>
                         </li>)
                     })}
                 </ul>
@@ -29,9 +31,9 @@ const Menu = ({topMovies, genreItems}) => {
                 <ul className="collapse nav">
                 {genreItems.map((genreItem, index) => {
                         return (<li className="nav-item" key={index}>
-                            <a className="nav-link" href={genreItem.link}>
+                            <Link href={genreItem.link}><a className="nav-link">
                                 {genreItem.name}
-                            </a>
+                            </a></Link>
                         </li>)
                     })}
                 </ul>

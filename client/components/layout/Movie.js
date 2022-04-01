@@ -18,24 +18,28 @@ const MovieLayout = ({ children }) => {
             name: 'The Perils of Pauline'
         }
     ]
-    const genreItems = [
-        {
-            link: '/?genre=comedy',
-            name: 'Comedy'
-        },
-        {
-            link: '/?genre=drama',
-            name: 'Drama'
-        },
-        {
-            link: '/?genre=documentary',
-            name: 'Documentary'
-        },
-        {
-            link: '/?genre=documentary',
-            name: 'Doc'
-        }
-    ]
+    const genres=["Comedy", "Drama", "Documentary", "News"]
+    const genreItems = genres.map((genre)=>{
+            return {
+                link: `/?genre=${genre}`,
+                name: genre
+            }
+
+    })
+    // const genreItems = [
+    //     {
+    //         link: '/?genre=Comedy',
+    //         name: 'Comedy'
+    //     },
+    //     {
+    //         link: '/?genre=Drama',
+    //         name: 'Drama'
+    //     },
+    //     {
+    //         link: '/?genre=Documentary',
+    //         name: 'Documentary'
+    //     },
+    //     ]
        return (
         <>
             <Head>
