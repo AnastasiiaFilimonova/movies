@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Chat from '../assistant/Chat'
 import Footer from './Footer'
 import Menu from './Menu'
 
@@ -133,6 +134,7 @@ const MovieLayout = ({ children }) => {
                 </div>
             </section>
             {children}
+            <Chat />
             <Footer topMovies={topMovies} genreItems={genreItems}/>
             {/* jQuery library */}
             {/* Bootstrap */}
